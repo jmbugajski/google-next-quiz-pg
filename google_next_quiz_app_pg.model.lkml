@@ -10,4 +10,4 @@ datagroup: google_next_quiz_app_pg_default_datagroup {
 
 persist_with: google_next_quiz_app_pg_default_datagroup
 
-explore: answerevents {}
+explore: quiz_events {}
