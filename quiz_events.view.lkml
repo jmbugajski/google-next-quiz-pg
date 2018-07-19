@@ -28,7 +28,12 @@ view: quiz_events {
 
   dimension: points_scored {
     type:  number
-    sql: (${TABLE}.events->> 'pointScored')::int ;;
+    sql: CAST(events->> 'pointsScored' as BIGINT) ;;
+  }
+
+  dimension: difficulty {
+    type:  number
+    sql:  CAST(events->'question'->>'difficulty' as INT) ;;
   }
 
   dimension_group: date_added {
