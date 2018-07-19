@@ -16,6 +16,11 @@ view: quiz_events {
     sql: ${TABLE}.events->> 'answerSubmitDate';;
   }
 
+  dimension: question {
+    type: string
+    sql: ${TABLE}.events-> 'question'->> 'question' ;;
+  }
+
   dimension: answer {
     type: string
     sql: ${TABLE}.events->> 'answer' ;;
