@@ -26,16 +26,27 @@ view: quiz_events {
     sql: (${TABLE}.events->> 'isAnswerCorrect')::boolean ;;
   }
 
+  dimension: points_scored {
+    type:  number
+    sql: (${TABLE}.events->> 'pointScored')::int ;;
+  }
+
+  dimension_group: date_added {
+    type: time
+    timeframes: [time, date, week, month, day_of_week, hour_of_day, minute]
+    sql: TO_TIMESTAMP(CAST(events->'question'->>'dateAdded' as BIGINT)/1000) ;;
+  }
+
   dimension_group: page_created {
     type: time
     timeframes: [time, date, week, month, day_of_week, hour_of_day, minute]
-#    sql: TIMESTAMP_MILLIS(${TABLE}.events->> 'pageCreatedDate') ;;
-    sql:  TO_TIMESTAMP(${TABLE}.events->> 'pageCreatedDate') ;;
+    sql: TO_TIMESTAMP(CAST(events->>'pageCreatedDate' as BIGINT)/1000) ;;
   }
 
-  dimension: points_scored {
-    type:  number
-    sql:  (${TABLE}.events->> 'pointScored')::varchar ;;
+  dimension_group: answer_submit {
+    type: time
+    timeframes: [time, date, week, month, day_of_week, hour_of_day, minute]
+    sql: TO_TIMESTAMP(CAST(events->>'answerSubmitDate' as BIGINT)/1000) ;;
   }
 
   measure: count {
