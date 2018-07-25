@@ -72,7 +72,7 @@ view: quiz_events {
 
   dimension:  user_is_active {
     type: yesno
-    sql: unix_seconds(current_timestamp()) - (CAST(events->>'answerSubmitDate' as BIGINT)/1000) < 120 ;;
+    sql: unix_seconds(current_timestamp()) - (CAST(${TABLE}.events->>'answerSubmitDate' as BIGINT)/1000) < 120 ;;
   }
 
   measure: count {
@@ -97,7 +97,7 @@ view: quiz_events {
 
   measure: active_user_count {
     type: count_distinct
-    sql: ${user_id} ;;
+    sql: ${TABLE}.events->> 'userId' ;;
     filters: {
       field: user_is_active
       value: "yes"
