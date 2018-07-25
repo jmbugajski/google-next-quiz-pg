@@ -28,7 +28,7 @@ view: quiz_events {
 
   dimension: answer_key {
     type:  string
-    sql:  CONCAT(CAST(${answer_submitted_timestamp} as string), CAST(${user_id} as string), CAST(${question_id} as string)) ;;
+    sql:  CONCAT(CAST(${answer_submitted_timestamp}), CAST(${user_id}), CAST(${question_id})) ;;
   }
 
 
