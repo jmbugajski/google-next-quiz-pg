@@ -72,7 +72,7 @@ view: quiz_events {
 
   dimension:  user_is_active {
     type: yesno
-    sql: unix_seconds(current_timestamp()) - (CAST(${TABLE}.events->>'answerSubmitDate' as BIGINT)/1000) < 120 ;;
+    sql: extract(epoch from now())-(quiz_events.events->>'answerSubmitDate')::bigint/1000 < 120 ;;
   }
 
   measure: count {
