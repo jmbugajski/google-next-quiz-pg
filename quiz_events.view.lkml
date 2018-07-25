@@ -26,6 +26,12 @@ view: quiz_events {
     sql: ${TABLE}.events->> 'answer' ;;
   }
 
+  dimension: answer_key {
+    type:  string
+    sql:  CONCAT(CAST(${answer_submitted_timestamp} as string), CAST(${user_id} as string), CAST(${question_id} as string)) ;;
+  }
+
+
   dimension: is_answer_correct {
     type: yesno
     sql: (${TABLE}.events->> 'isAnswerCorrect')::boolean ;;
@@ -59,6 +65,16 @@ view: quiz_events {
     sql: TO_TIMESTAMP(CAST(events->>'answerSubmitDate' as BIGINT)/1000) ;;
   }
 
+  dimension: user_id_short {
+    type:  string
+    sql:  SUBSTR(${user_id}, -6) ;;
+  }
+
+  dimension:  user_is_active {
+    type: yesno
+    sql: unix_seconds(current_timestamp()) - (CAST(events->>'answerSubmitDate' as BIGINT)/1000) < 120 ;;
+  }
+
   measure: count {
     type: count
     drill_fields: []
@@ -78,4 +94,14 @@ view: quiz_events {
     type: number
     sql:  COUNT(DISTINCT ${TABLE}.events->> 'questionId') ;;
   }
+
+  measure: active_user_count {
+    type: count_distinct
+    sql: ${user_id} ;;
+    filters: {
+      field: user_is_active
+      value: "yes"
+    }
+  }
+
 }
