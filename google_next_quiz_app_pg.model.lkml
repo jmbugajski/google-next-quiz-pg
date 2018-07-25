@@ -5,7 +5,7 @@ include: "*.view"
 
 datagroup: google_next_quiz_app_pg_default_datagroup {
   # sql_trigger: SELECT MAX(id) FROM etl_log;;
-  max_cache_age: "1 minute"
+  max_cache_age: "1 second"
 }
 
 persist_with: google_next_quiz_app_pg_default_datagroup
